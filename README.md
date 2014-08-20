@@ -1,5 +1,5 @@
 celery-statsd
-~~~~~~~~~~~~~
+=============
 
 In your `tasks.py`
 
