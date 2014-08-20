@@ -9,29 +9,30 @@ import pytest
 import celery_statsd
 
 
+celery.current_app.conf.CELERY_ALWAYS_EAGER = True
+
+
 @celery.task
 def _stub_task(arg):
     return arg
 
 
-celery.current_app.conf.CELERY_ALWAYS_EAGER = True
-
-def test_enqueue(monkeypatch):
+@pytest.fixture
+def mock_client(monkeypatch):
     mock_client = mock.Mock()
 
     def _get_mock_client(app):
         return mock_client
 
     monkeypatch.setattr(celery_statsd, "get_client", _get_mock_client)
-    result = _stub_task.delay(1)
 
-    print mock_client.incr.mock_calls
-    print mock_client.timing.mock_calls
-
-    mock_client.timing.assertCalledWith("tests.test_celery_statsd._stub_task.enqueue")
-    mock_client.incr.assertCalledWith("tests.test_celery_statsd._stub_task.success")
+    return mock_client
 
 
+def test_run(mock_client):
+    assert _stub_task.delay(1)
 
-def test_run(monkeypatch):
-    pass
+    mock_client.timing.assert_called_with(
+        "tests.test_celery_statsd._stub_task.run", mock.ANY)
+    mock_client.incr.assert_called_with(
+        "tests.test_celery_statsd._stub_task.success")
