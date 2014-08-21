@@ -12,10 +12,13 @@ _state = threading.local()
 
 
 def task_key(task):
+    prefix = getattr(celery.current_app.conf,
+                     "CELERY_STATSD_PREFIX", "celery.")
+
     if isinstance(task, str):
-        return task
+        return prefix + task
     else:
-        return task.name
+        return prefix + task.name
 
 
 def get_client(celery_app):

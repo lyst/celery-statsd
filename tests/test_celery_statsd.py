@@ -33,6 +33,6 @@ def test_run(mock_client):
     assert _stub_task.delay(1)
 
     mock_client.timing.assert_called_with(
-        "tests.test_celery_statsd._stub_task.run", mock.ANY)
+        "celery.tests.test_celery_statsd._stub_task.run", mock.ANY)
     mock_client.incr.assert_called_with(
-        "tests.test_celery_statsd._stub_task.success")
+        "celery.tests.test_celery_statsd._stub_task.success")
