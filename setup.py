@@ -22,5 +22,8 @@ setup(
     packages=find_packages(),
     zip_safe=False,
 
-    install_requires=['statsd>=2.0.0']
+    install_requires=[
+        'six',
+        'statsd>=2.0.0'
+    ]
 )
