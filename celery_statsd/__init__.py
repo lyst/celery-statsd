@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 
-import six
 import threading
 import time
 
 import celery
 import celery.signals
+
+import six
 
 import statsd
 
