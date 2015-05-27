@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+import six
 import threading
 import time
 
@@ -15,7 +16,7 @@ def task_key(task):
     prefix = getattr(celery.current_app.conf,
                      "CELERY_STATSD_PREFIX", "celery.")
 
-    if isinstance(task, str):
+    if isinstance(task, six.string_types):
         return prefix + task
     else:
         return prefix + task.name

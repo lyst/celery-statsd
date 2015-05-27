@@ -9,7 +9,7 @@ __summary__ = (
 )
 __uri__ = "https://github.com/ssaw/celery-statsd"
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 __author__ = "Lyst LTD"
 __email__ = "info@lyst.com"
