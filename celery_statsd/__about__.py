@@ -15,4 +15,4 @@ __author__ = "Lyst LTD"
 __email__ = "info@lyst.com"
 
 __license__ = "LGPLv3"
-__copyright__ = "Copyright 2014 %s" % __author__
+__copyright__ = "Copyright 2015 %s" % __author__
