@@ -17,10 +17,13 @@ def task_key(task):
     prefix = getattr(celery.current_app.conf,
                      "CELERY_STATSD_PREFIX", "celery.")
 
+    retry_number = task.request.retries if hasattr(task, 'request') else 0
+    retry_number = '' if retry_number == 0 else retry_number
+
     if isinstance(task, six.string_types):
-        return prefix + task
+        return '{}{}{}'.format(prefix, task, retry_number)
     else:
-        return prefix + task.name
+        return '{}{}{}'.format(prefix, task.name, retry_number)
 
 
 def get_client(celery_app):
