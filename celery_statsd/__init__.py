@@ -17,13 +17,10 @@ def task_key(task):
     prefix = getattr(celery.current_app.conf,
                      "CELERY_STATSD_PREFIX", "celery.")
 
-    retry_number = task.request.retries if hasattr(task, 'request') else 0
-    retry_number = '' if retry_number == 0 else retry_number
-
     if isinstance(task, six.string_types):
-        return '{}{}{}'.format(prefix, task, retry_number)
+        return '{}{}'.format(prefix, task)
     else:
-        return '{}{}{}'.format(prefix, task.name, retry_number)
+        return '{}{}'.format(prefix, task.name)
 
 
 def get_client(celery_app):
@@ -49,14 +46,19 @@ def get_client(celery_app):
 
 def start_timer(name, group, instance):
     try:
-        assert (name, group, instance) not in _state.timers
         _state.timers[(name, group, instance)] = time.time()
     except AttributeError:
         _state.timers = {(name, group, instance): time.time()}
 
 
 def stop_timer(name, group, instance):
-    total = time.time() - _state.timers.pop((name, group, instance))
+
+    try:
+        start = _state.timers.pop((name, group, instance))
+    except (AttributeError, KeyError):
+        return
+
+    total = time.time() - start
 
     get_client(celery.current_app).timing(
         "{0}.{1}".format(group, name),

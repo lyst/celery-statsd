@@ -1,0 +1,24 @@
+checkout:
+    post:
+    - |
+        git clean -fdx
+        git fetch origin master
+        git branch
+        # Merge with master if this commit is not merged yet
+        if ! git merge-base --is-ancestor ${CIRCLE_SHA1} origin/master ; then
+            git config --global user.email "circleci@lyst.com"
+            git config --global user.name "CircleCI"
+            git checkout -f origin/master
+            echo Merging ${CIRCLE_SHA1} into origin/master at $(git rev-parse origin/master)
+            git merge -m Auto-merge --no-ff $CIRCLE_SHA1
+        fi
+
+dependencies:
+    override:
+        - pip install coverage flake8 flake8-import-order
+        - pip install -r requirements.txt
+
+test:
+  override:
+    - ./.circle/lint-all.sh
+    - ./.circle/py_tests.sh
