@@ -51,11 +51,18 @@ def start_timer(name, group, instance):
         _state.timers = {(name, group, instance): time.time()}
 
 
+def _get_timer(name, group, instance):
+    try:
+        return _state.timers.pop((name, group, instance))
+    except (AttributeError, KeyError):
+        return
+
+
 def stop_timer(name, group, instance):
 
-    try:
-        start = _state.timers.pop((name, group, instance))
-    except (AttributeError, KeyError):
+    start = _get_timer(name, group, instance)
+
+    if start is None:
         return
 
     total = time.time() - start
