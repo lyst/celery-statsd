@@ -18,9 +18,9 @@ def task_key(task):
                      "CELERY_STATSD_PREFIX", "celery.")
 
     if isinstance(task, six.string_types):
-        return prefix + task
+        return '{}{}'.format(prefix, task)
     else:
-        return prefix + task.name
+        return '{}{}'.format(prefix, task.name)
 
 
 def get_client(celery_app):
@@ -46,14 +46,26 @@ def get_client(celery_app):
 
 def start_timer(name, group, instance):
     try:
-        assert (name, group, instance) not in _state.timers
         _state.timers[(name, group, instance)] = time.time()
     except AttributeError:
         _state.timers = {(name, group, instance): time.time()}
 
 
+def _get_timer(name, group, instance):
+    try:
+        return _state.timers.pop((name, group, instance))
+    except (AttributeError, KeyError):
+        return
+
+
 def stop_timer(name, group, instance):
-    total = time.time() - _state.timers.pop((name, group, instance))
+
+    start = _get_timer(name, group, instance)
+
+    if start is None:
+        return
+
+    total = time.time() - start
 
     get_client(celery.current_app).timing(
         "{0}.{1}".format(group, name),

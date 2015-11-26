@@ -7,9 +7,9 @@ __title__ = "celery-statsd"
 __summary__ = (
     "Send various info to statsd for each Celery task"
 )
-__uri__ = "https://github.com/ssaw/celery-statsd"
+__uri__ = "https://github.com/lyst/celery-statsd/"
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 
 __author__ = "Lyst LTD"
 __email__ = "info@lyst.com"
