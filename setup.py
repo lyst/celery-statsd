@@ -19,7 +19,7 @@ setup(
     author=about['__author__'],
     author_email=about['__email__'],
 
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     install_requires=[
         "celery>=3.1.17",
         "statsd>=3.0",
