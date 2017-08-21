@@ -78,13 +78,15 @@ def inc_counter(name, group):
 
 
 @celery.signals.before_task_publish.connect
-def statsd_before_task_publish(sender, body, **kwargs):
-    start_timer("enqueue", task_key(sender), body['id'])
+def statsd_before_task_publish(sender, body, headers, **kwargs):
+    task_id = headers.get('id') or body.get('id')
+    start_timer("enqueue", task_key(sender), task_id)
 
 
 @celery.signals.after_task_publish.connect
-def statsd_after_task_publish(sender, body, **kwargs):
-    stop_timer("enqueue", task_key(sender), body['id'])
+def statsd_after_task_publish(sender, body, headers, **kwargs):
+    task_id = headers.get('id') or body.get('id')
+    stop_timer("enqueue", task_key(sender), task_id)
 
 
 @celery.signals.task_prerun.connect
