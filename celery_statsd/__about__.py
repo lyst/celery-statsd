@@ -9,7 +9,7 @@ __summary__ = (
 )
 __uri__ = "https://github.com/lyst/celery-statsd/"
 
-__version__ = "0.1.3"
+__version__ = "0.2.0"
 
 __author__ = "Lyst LTD"
 __email__ = "info@lyst.com"
