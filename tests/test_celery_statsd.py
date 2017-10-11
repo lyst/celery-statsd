@@ -2,12 +2,11 @@ from __future__ import absolute_import
 
 import celery
 
-import mock
-
 import celery_statsd
 
-import pytest
+import mock
 
+import pytest
 
 celery.current_app.conf.CELERY_ALWAYS_EAGER = True
 
