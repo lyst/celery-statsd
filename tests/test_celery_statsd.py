@@ -4,9 +4,9 @@ import celery
 
 import mock
 
-import pytest
-
 import celery_statsd
+
+import pytest
 
 
 celery.current_app.conf.CELERY_ALWAYS_EAGER = True
@@ -58,7 +58,8 @@ def test_run_with_retry(mock_client, monkeypatch):
 
     # The name of the metric does not change among retried tasks
     mock_client.timing.assert_called_with(
-        "celery.tests.test_celery_statsd._stub_task_with_retries.run", mock.ANY)
+        "celery.tests.test_celery_statsd._stub_task_with_retries.run",
+        mock.ANY)
 
     # We get the timer 3 times
     assert get_timer_mock.call_count == 3
