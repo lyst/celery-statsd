@@ -20,5 +20,10 @@ setup(
     author_email=about['__email__'],
 
     packages=find_packages(),
+    install_requires=[
+        "celery>=3.1.17",
+        "statsd>=3.0",
+        "six>=1.9.0",
+    ],
     zip_safe=False,
 )
