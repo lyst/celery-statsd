@@ -1,6 +1,14 @@
 celery-statsd
 =============
 
+# Installation
+
+```
+pip install celery-statsd
+```
+
+# Set Up
+
 In your `tasks.py`
 
 ```python
